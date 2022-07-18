@@ -1,8 +1,14 @@
 import { DefineComponent } from 'vue';
 import SRVButton from './SRVButton.vue';
-(SRVButton as DefineComponent).install = (Vue: any) => {
-    Vue.component(SRVButton.name, SRVButton);
-};
+const components = [
+    SRVButton
+];
+components.forEach(comp => {
+    (comp as DefineComponent).install = (Vue: any) => {
+        Vue.component(comp.name, comp);
+    };
+})
+
 
 export { SRVButton };
 
