@@ -39,7 +39,7 @@ const props = defineProps({
     }
 });
 
-const emit = defineEmits<{(e: 'submit', data: TableEditParamsType): void}>()
+const emit = defineEmits<{(e: 'onChange', data: TableEditParamsType): void}>()
 function isInKeys(key: string | number) {
     return props.tbHead.some(item => item.key === key);
 }
@@ -64,7 +64,7 @@ function showEditInput(e: MouseEvent, index: number, key: number | string, value
 // eslint-disable-next-line
 function setValue(value: any) {
     currentData.value = value;
-    emit('submit', {...currentData});
+    emit('onChange', {...currentData});
 }
 
 function findName(key: string) {
