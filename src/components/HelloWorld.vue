@@ -1,6 +1,6 @@
 <template>
     <!-- <SRVButton size='small' type="primary" long="long" disabled="true">快点我</SRVButton> -->
-    <SRVTable @submit="submit" :tb-head="tabHeadData" :tb-body="tabBodyData"></SRVTable>
+    <SRVTable @onChange="onChange" :tb-head="tabHeadData" :tb-body="tabBodyData"></SRVTable>
 </template>
 
 <script setup lang="ts">
@@ -33,7 +33,7 @@ const tabBodyData = reactive<any[]>([
     }
 ]);
 
-function submit(data: TableEditParamsType) {
+function onChange(data: TableEditParamsType) {
     const {key, index, value} = data;
     tabBodyData[index][key] = value;
 }
