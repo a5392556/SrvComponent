@@ -20,3 +20,5 @@ declare type TableEditParamsType = {
     value: string,
     index: number
 }
+declare type EchartLineDrawType = 'canvas' | 'svg';
+declare type EChartsOption = echarts.EChartsOption;

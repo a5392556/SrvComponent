@@ -1,9 +1,8 @@
 <template>
-    <input  class="edit-input" type="text" :value="value" @input="onInput" @blur="onBlur" @click="onClick" />
+    <input  class="edit-input" :style="{border: `1px solid ${inputBorderColor}`}" type="text" :value="value" @input="onInput" @blur="onBlur" @click="onClick" />
 </template>
 <script setup lang='ts'>
 import {defineProps, ref } from 'vue';
-
     const props = defineProps({
         value: {
             type: String,
@@ -13,6 +12,10 @@ import {defineProps, ref } from 'vue';
             type: Function,
             // eslint-disable-next-line
             default: () => {}
+        },
+        inputBorderColor: {
+            type: String,
+            default: 'red'
         }
     });
 
@@ -44,4 +47,6 @@ import {defineProps, ref } from 'vue';
     border: 1px solid rgb(255, 38, 0);
     outline: 0;
 }
+
+
 </style>

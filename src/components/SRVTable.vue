@@ -1,21 +1,25 @@
 <template>
-    <table border="1" width='50%' align="center" class="srv-table">
-        <thead v-show="headVisible">
+    <table width='50%' align="center" class="srv-table" :style="{ border: `${borderWidth}px solid ${borderColor}` }">
+        <thead v-show="headVisible" :style="{ 'background-color': tbHeaderBgColor }">
             <tr>
-                <th v-for="(item) in tbHead" :key="item.key">{{ item.name }}</th>
+                <th v-for="(item) in tbHead" :key="item.key"
+                    :style="{ border: `${borderWidth}px solid ${borderColor}` }">{{ item.name }}</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(row, index) of tbBody" :key="index">
+            <tr v-for="(row, index) of tbBody" :key="index"
+                :style="{ border: `${borderWidth}px solid ${borderColor}`, 'background-color': `${ trBgColors[index % trBgColors.length] }` }">
                 <td v-show="isInKeys(key)" v-for="(value, key) in row" :key="key"
-                    @click.stop="showEditInput($event, index, key, value)">{{ value }}
+                    @click.stop="showEditInput($event, index, key, value)"
+                    :style="{ 'border': `${borderWidth}px solid ${borderColor}`}">
+                    {{ value }}
                 </td>
             </tr>
         </tbody>
     </table>
 </template>
 <script setup lang='ts'>
-import { PropType, defineProps, createApp, reactive } from 'vue';
+import { PropType, defineProps, createApp, reactive, onUnmounted } from 'vue';
 import SRVEditInput from "./SRVEditInput.vue";
 let editInputApp: any = undefined;
 const currentData = reactive({
@@ -36,35 +40,62 @@ const props = defineProps({
     headVisible: {
         type: Boolean as PropType<boolean>,
         default: () => true
+    },
+    tableBorder: {
+        type: Number as PropType<number>,
+        default: () => 0
+    },
+    inputBorderColor: {
+        type: String,
+        default: 'red'
+    },
+    borderColor: {
+        type: String,
+        default: 'black'
+    },
+    borderWidth: {
+        type: String,
+        default: '1'
+    },
+    tbHeaderBgColor: {
+        type: String,
+        default: '#ffffff'
+    },
+    trBgColors: {
+        type: Array as PropType<string[]>,
+        default: () => ['#ffffff']
     }
 });
-
-const emit = defineEmits<{(e: 'onChange', data: TableEditParamsType): void}>()
+// 改变表格的数据
+const emit = defineEmits<{ (e: 'onChange', data: TableEditParamsType): void }>();
 function isInKeys(key: string | number) {
     return props.tbHead.some(item => item.key === key);
 }
+// 显示输入框
 function showEditInput(e: MouseEvent, index: number, key: number | string, value: string) {
+    // 移除输入框并且清空数据
     removeEditInput();
     if (!checkEditable(key)) return;
-
     const target = e.target as HTMLElement;
     const oFrag = document.createDocumentFragment();
     editInputApp = createApp(SRVEditInput, {
         value: target.textContent,
-        setValue
+        setValue,
+        inputBorderColor: props.inputBorderColor
     });
     if (editInputApp) {
         editInputApp.mount(oFrag);
         target.appendChild(oFrag);
         (target.querySelector('.edit-input') as HTMLInputElement).select();
     }
-
-    setData({key: key as string, index: index, name: findName(key as string), value: ''})
+    // 设置当前选中单元数据
+    setData({ key: key as string, index: index, name: findName(key as string), value: '' });
 }
 // eslint-disable-next-line
 function setValue(value: any) {
     currentData.value = value;
-    emit('onChange', {...currentData});
+    // 把改变表格数据的操作给 input 的 onBlur
+    emit('onChange', { ...currentData });
 }
 
 function findName(key: string) {
@@ -78,12 +109,14 @@ function setData(params = { key: '', value: '', index: -1, name: '' }) {
     currentData.index = params.index;
     currentData.name = params.name;
 }
-
+// 检测是否可以编辑
 function checkEditable(key: string | number) {
+    // 根据目前的字段是否匹配而且 editable === true 
     return props.tbHead.some(item => item.key === key && item.editable);
 }
 
 function removeEditInput() {
+    // 卸载 editInputApp
     editInputApp && editInputApp.unmount();
     editInputApp = undefined;
     currentData.key = '';
@@ -93,25 +126,52 @@ function removeEditInput() {
 }
 
 window.addEventListener('click', removeEditInput, false);
+
+onUnmounted(() => {
+    window.removeEventListener('click', removeEditInput, false);
+});
 </script>
 <style scoped lang='scss'>
 .srv-table {
     width: 50%;
-    border: 1px solid black;
     margin: 0 auto;
     border-collapse: collapse;
+    border-spacing: 0;
+    border: 1px solid black;
+    color: #606266;
 
-    td {
-        height: 50px;
-        border: 1px solid black;
-        text-align: center;
-        vertical-align: center;
-        cursor: pointer;
-        position: relative;
+    thead {
+        tr {
+            th {
+                border: 1px solid black;
+            }
+        }
     }
 
     tbody tr:nth-child(even) {
         background-color: antiquewhite;
+    }
+
+    tbody tr:hover {
+        background-color: rgb(58, 58, 58) !important;
+        color: white;
+    }
+
+    tbody {
+        tr {
+            border: 1px solid black;
+
+            td {
+                height: 50px;
+                text-align: center;
+                vertical-align: center;
+                cursor: pointer;
+                position: relative;
+                border: 1px solid rgb(0, 0, 0);
+            }
+
+        }
+
     }
 }
 </style>

@@ -10,7 +10,7 @@
             'is-error': type === 'error',
             'is-warn': type === 'warn',
             'is-info': type === 'info',
-            'is-disabled': disabled,
+            'is-disabled': disabled === 'true',
             'is-long': long === 'long',
         }]">
         <slot></slot>
@@ -98,9 +98,7 @@ defineProps({
 
 .btn-style {
     position: relative;
-
     box-sizing: border-box;
-
     border: none;
     border-radius: 4px;
     background: transparent;
