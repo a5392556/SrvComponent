@@ -13,7 +13,6 @@ declare type TbBodyDataType = {
     key: string,
     value: string
 }
-
 declare type TableEditParamsType = {
     key: string,
     name: string,
@@ -22,3 +21,13 @@ declare type TableEditParamsType = {
 }
 declare type EchartLineDrawType = 'canvas' | 'svg';
 declare type EChartsOption = echarts.EChartsOption;
+declare interface styleIf {
+    left:number | string,
+    top:number | string,
+    bottom:number | string,
+    right:number | string,
+    zIndex:number,
+    width:number | string,
+    height:number | string,
+    rotate:number
+}

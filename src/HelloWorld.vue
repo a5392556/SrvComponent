@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 100px;width: 100%;">
+    <!-- <div style="height: 100px;width: 100%;">
         <SRVButton size='small' type="primary" long="short" disabled="false">快点我</SRVButton>
         <SRVButton size='small' type="success" long="short" disabled="true">快点我</SRVButton>
         <SRVButton size='large' type="error" long="short" disabled="true">快点我</SRVButton>
@@ -13,13 +13,21 @@
     </div>
     <div style="height: 300px;width: 400px;">
         <SRVChart width="100%" height="100%" :option="option" draw-type="canvas"></SRVChart>
+    </div> -->
+    <div style="height: 300px;width: 400px;">
+        <SRVDragResize v-for="(item, index) in data.data" :key="item.name" :x="item.x" :y="item.y" :zIndex="1"
+            :isDraggable="item.drag" :isResizable="item.resize" :isRotate="item.rotate" :isActive="item.active"
+            :resizeIconSize="8" :isGuide="true" :guideStyle="{}">
+            {{ item.x }}
+            <span>{{ item.name }}</span>
+        </SRVDragResize>
     </div>
 </template>
 
 <script setup lang="ts">
 import * as echarts from 'echarts';
 import { reactive } from "vue";
-import { SRVTable, SRVChart, SRVButton } from "./components/index";
+import { SRVTable, SRVChart, SRVButton, SRVDragResize } from "./components/index";
 const tabHeadData = reactive<TbHeadKeyType[]>([
     {
         key: 'date',
@@ -235,6 +243,64 @@ const option: EChartsOption = {
         }
     ]
 };
+let data = reactive({
+    data: [
+        {
+            x: 100,
+            y: 100,
+            name: '哈哈',
+            drag: false,
+            resize: true,
+            rotate: true,
+            active: false
+        },
+        {
+            x: 200,
+            y: 200,
+            name: '哈哈2',
+            drag: true,
+            resize: true,
+            rotate: true,
+            active: true
+        },
+        {
+            x: 300,
+            y: 300,
+            name: '哈哈3',
+            drag: true,
+            resize: true,
+            rotate: true,
+            active: false
+        },
+        {
+            x: 400,
+            y: 400,
+            name: '哈哈4',
+            drag: true,
+            resize: true,
+            rotate: true,
+            active: false
+        },
+        {
+            x: 500,
+            y: 500,
+            name: '哈哈5',
+            drag: true,
+            resize: true,
+            rotate: true,
+            active: false
+        },
+        {
+            x: 600,
+            y: 600,
+            name: '哈哈6',
+            drag: true,
+            resize: false,
+            rotate: false,
+            active: false
+        }
+    ]
+});
 
 
 </script>

@@ -18,6 +18,12 @@ module.exports = {
         'no-undef': 0,
         'vue/require-valid-default-prop': 2,
         'vue/no-unused-vars': 1,
-        '@typescript-eslint/no-empty-function': 0
+        '@typescript-eslint/no-empty-function': 0,
+        'vue/no-use-v-if-with-v-for': 0,
+        'vue/multi-word-component-names': 0,
+        '@typescript-eslint/no-inferrable-types': 1,
+        'prefer-const': 0,
+        '@typescript-eslint/ban-types': 0,
+        'no-self-assign': 0
     },
 }
